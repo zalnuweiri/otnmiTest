@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+/*Custom Breakpoint below*/
+
+/* Mondwest Regular */
+@font-face {
+    font-family: 'Mondwest';
+    src: url('/fonts/Mondwest-Regular.otf') format('opentype');
+    font-weight: 400; /* normal */
+    font-style: normal;
+}
+
+/* Mondwest Bold */
+@font-face {
+    font-family: 'Mondwest';
+    src: url('/fonts/Mondwest-Bold.otf') format('opentype');
+    font-weight: 700; /* bold */
+    font-style: normal;
+}
+
+/* NeueBit Regular */
+@font-face {
+    font-family: 'NeueBit';
+    src: url('/fonts/NeueBit-Regular.otf') format('opentype');
+    font-weight: 400; /* normal */
+    font-style: normal;
+}
+
+/* NeueBit Bold */
+@font-face {
+    font-family: 'NeueBit';
+    src: url('/fonts/NeueBit-Bold.otf') format('opentype');
+    font-weight: 700; /* bold */
+    font-style: normal;
+}
+
+@theme {
+    --color-primary: #FFB703;
+    --color-secondary: #023047;
+    --color-accent: #8ECAE6;
+    --color-background: #F5F5F5;
+    --color-card: #FFFFFF;
+}
