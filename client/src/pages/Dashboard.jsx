@@ -1,7 +1,15 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import api from "../services/api.js";
 import { useAuth } from "../context/AuthContext.jsx";
 import { Link } from "react-router-dom";
+import {
+    Briefcase,
+    Mail,
+    User,
+    Trash2,
+    Download,
+    SendHorizonal,
+} from "lucide-react";
 
 export default function Dashboard() {
     const { publisherKey, userEmail, isAuthenticated } = useAuth();
@@ -31,91 +39,223 @@ export default function Dashboard() {
             }
         };
 
-        if (isAuthenticated && publisherKey) {
-            fetchData();
-        }
+        if (isAuthenticated && publisherKey) fetchData();
     }, [publisherKey, userEmail, isAuthenticated]);
 
     const remove = async (id) => {
         if (!confirm("Delete this job?")) return;
         try {
             await api.delete(`/jobs/${id}`);
-            setJobs(prev => prev.filter(j => j._id !== id));
+            setJobs((prev) => prev.filter((j) => j._id !== id));
         } catch (err) {
             console.error("Delete job error:", err);
         }
     };
 
     return (
-        <div className="grid lg:grid-cols-3 gap-8">
-            {/* ---------- My Jobs ---------- */}
-            <section className="bg-card rounded-2xl border p-6">
-                <h2 className="text-2xl font-bold text-secondary">My Jobs</h2>
-                <div className="mt-4 space-y-4">
-                    {jobs.map(j => (
-                        <div key={j._id} className="flex items-start justify-between border rounded-xl p-4">
-                            <div>
-                                <Link to={`/jobs/${j._id}`} className="font-semibold text-secondary">
-                                    {j.title}
-                                </Link>
-                                <p className="text-gray-600 text-sm">{j.company}</p>
-                            </div>
-                            <button onClick={() => remove(j._id)} className="text-red-600 hover:underline">
-                                Delete
-                            </button>
-                        </div>
-                    ))}
-                    {jobs.length === 0 && <p className="text-gray-600">No jobs yet.</p>}
-                </div>
-            </section>
+        <div className="min-h-screen bg-[#f9fafb] py-16 px-6">
+            <div className="max-w-6xl mx-auto">
+                <h1 className="text-4xl font-bold text-slate-900 mb-10">
+                    Your <span className="bg-gradient-to-r from-[#005072] to-[#00a1a7] bg-clip-text text-transparent
+                                           transition-all duration-500 hover:from-[#00a1a7] hover:to-[#005072]
+                                           hover:scale-105 inline-block">
+                                                                            Dashboard </span>
+                </h1>
 
-            {/* ---------- Received Applications ---------- */}
-            <section className="bg-card rounded-2xl border p-6">
-                <h2 className="text-2xl font-bold text-secondary">Received Applications</h2>
-                <div className="mt-4 space-y-4">
-                    {receivedApps.map(a => (
-                        <div key={a._id} className="border rounded-xl p-4">
-                            <div className="flex items-center justify-between">
-                                <div>
-                                    <p className="font-medium text-secondary">{a.name}</p>
-                                    <p className="text-sm text-gray-600">{a.email}</p>
-                                </div>
-                                <a href={a.cvPath} download className="text-primary underline">
-                                    Download CV
-                                </a>
-                            </div>
-                            <p className="text-sm text-gray-700 mt-2">
-                                Applied for <b>{a.job?.title}</b> @ {a.job?.company}
+                {/* ---------- Stats Cards ---------- */}
+                <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+                    {/* Total Jobs */}
+                    <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+                        <div className="p-3 bg-gradient-to-r from-[#005072] to-[#00a1a7] rounded-xl">
+                            <Briefcase className="text-white w-6 h-6" />
+                        </div>
+                        <div>
+                            <p className="text-sm text-slate-500 font-medium">Total Jobs</p>
+                            <p className="text-2xl font-semibold text-slate-900">{jobs.length}</p>
+                        </div>
+                    </div>
+
+                    {/* Total Applications */}
+                    <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+                        <div className="p-3 bg-gradient-to-r from-[#00a1a7] to-[#0097b2] rounded-xl">
+                            <User className="text-white w-6 h-6" />
+                        </div>
+                        <div>
+                            <p className="text-sm text-slate-500 font-medium">Total Applications</p>
+                            <p className="text-2xl font-semibold text-slate-900">
+                                {receivedApps.length + sentApps.length}
                             </p>
                         </div>
-                    ))}
-                    {receivedApps.length === 0 && <p className="text-gray-600">No applications received.</p>}
-                </div>
-            </section>
+                    </div>
 
-            {/* ---------- Sent Applications ---------- */}
-            <section className="bg-card rounded-2xl border p-6">
-                <h2 className="text-2xl font-bold text-secondary">Sent Applications</h2>
-                <div className="mt-4 space-y-4">
-                    {sentApps.map(a => (
-                        <div key={a._id} className="border rounded-xl p-4">
-                            <div className="flex items-center justify-between">
-                                <div>
-                                    <p className="font-medium text-secondary">{a.job?.title}</p>
-                                    <p className="text-sm text-gray-600">{a.job?.company}</p>
-                                </div>
-                                <a href={a.cvPath} download className="text-primary underline">
-                                    Download CV
-                                </a>
-                            </div>
-                            <p className="text-sm text-gray-700 mt-2">
-                                Status: <b>Submitted</b> — by {a.name} ({a.email})
-                            </p>
+                    {/* Recent Jobs */}
+                    <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+                        <div className="p-3 bg-gradient-to-r from-[#8b5cf6] to-[#6366f1] rounded-xl">
+                            <SendHorizonal className="text-white w-6 h-6" />
                         </div>
-                    ))}
-                    {sentApps.length === 0 && <p className="text-gray-600">You haven’t applied to any jobs yet.</p>}
+                        <div>
+                            <p className="text-sm text-slate-500 font-medium">Recent Jobs</p>
+                            <p className="text-2xl font-semibold text-slate-900">
+                                {
+                                    jobs.filter(j => {
+                                        const created = new Date(j.createdAt);
+                                        const diffDays = (Date.now() - created) / (1000 * 60 * 60 * 24);
+                                        return diffDays <= 7;
+                                    }).length
+                                }
+                            </p>
+                            <p className="text-xs text-slate-400">Last 7 days</p>
+                        </div>
+                    </div>
+
+                    {/* Recent Applications */}
+                    <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+                        <div className="p-3 bg-gradient-to-r from-[#f97316] to-[#fb923c] rounded-xl">
+                            <Mail className="text-white w-6 h-6" />
+                        </div>
+                        <div>
+                            <p className="text-sm text-slate-500 font-medium">Recent Applications</p>
+                            <p className="text-2xl font-semibold text-slate-900">
+                                {
+                                    receivedApps.filter(a => {
+                                        const created = new Date(a.createdAt);
+                                        const diffDays = (Date.now() - created) / (1000 * 60 * 60 * 24);
+                                        return diffDays <= 7;
+                                    }).length
+                                }
+                            </p>
+                            <p className="text-xs text-slate-400">Last 7 days</p>
+                        </div>
+                    </div>
                 </div>
-            </section>
+
+
+                <div className="grid lg:grid-cols-3 gap-8">
+                    {/* ---------- My Jobs ---------- */}
+                    <section className="bg-white border border-slate-200 rounded-2xl shadow-sm p-6">
+                        <div className="flex items-center gap-2 mb-4">
+                            <Briefcase className="w-5 h-5 text-[#005072]"/>
+                            <h2 className="text-xl font-semibold text-slate-900">My Jobs</h2>
+                        </div>
+
+                        <div className="space-y-4">
+                            {jobs.map((j) => (
+                                <div
+                                    key={j._id}
+                                    className="flex items-start justify-between border border-slate-200 rounded-xl p-4 hover:shadow transition-all"
+                                >
+                                    <div>
+                                        <Link
+                                            to={`/jobs/${j._id}`}
+                                            className="font-medium text-[#005072] hover:underline"
+                                        >
+                                            {j.title}
+                                        </Link>
+                                        <p className="text-slate-500 text-sm">{j.company}</p>
+                                    </div>
+                                    <button
+                                        onClick={() => remove(j._id)}
+                                        className="text-red-600 hover:text-red-700"
+                                        title="Delete job"
+                                    >
+                                        <Trash2 className="w-4 h-4" />
+                                    </button>
+                                </div>
+                            ))}
+                            {jobs.length === 0 && (
+                                <p className="text-slate-500 text-sm">No jobs yet.</p>
+                            )}
+                        </div>
+                    </section>
+
+                    {/* ---------- Received Applications ---------- */}
+                    <section className="bg-white border border-slate-200 rounded-2xl shadow-sm p-6">
+                        <div className="flex items-center gap-2 mb-4">
+                            <Mail className="w-5 h-5 text-[#00a1a7]" />
+                            <h2 className="text-xl font-semibold text-slate-900">
+                                Received Applications
+                            </h2>
+                        </div>
+
+                        <div className="space-y-4">
+                            {receivedApps.map((a) => (
+                                <div
+                                    key={a._id}
+                                    className="border border-slate-200 rounded-xl p-4 hover:shadow transition-all"
+                                >
+                                    <div className="flex items-center justify-between">
+                                        <div>
+                                            <p className="font-medium text-[#005072]">{a.name}</p>
+                                            <p className="text-sm text-slate-500">{a.email}</p>
+                                        </div>
+                                        <a
+                                            href={a.cvPath}
+                                            download
+                                            className="flex items-center gap-1 text-[#00a1a7] hover:underline text-sm"
+                                        >
+                                            <Download className="w-4 h-4" /> CV
+                                        </a>
+                                    </div>
+                                    <p className="text-sm text-slate-600 mt-2">
+                                        Applied for{" "}
+                                        <b className="text-slate-800">{a.job?.title}</b> @{" "}
+                                        {a.job?.company}
+                                    </p>
+                                </div>
+                            ))}
+                            {receivedApps.length === 0 && (
+                                <p className="text-slate-500 text-sm">
+                                    No applications received yet.
+                                </p>
+                            )}
+                        </div>
+                    </section>
+
+                    {/* ---------- Sent Applications ---------- */}
+                    <section className="bg-white border border-slate-200 rounded-2xl shadow-sm p-6">
+                        <div className="flex items-center gap-2 mb-4">
+                            <SendHorizonal className="w-5 h-5 text-[#005072]" />
+                            <h2 className="text-xl font-semibold text-slate-900">
+                                Sent Applications
+                            </h2>
+                        </div>
+
+                        <div className="space-y-4">
+                            {sentApps.map((a) => (
+                                <div
+                                    key={a._id}
+                                    className="border border-slate-200 rounded-xl p-4 hover:shadow transition-all"
+                                >
+                                    <div className="flex items-center justify-between">
+                                        <div>
+                                            <p className="font-medium text-[#005072]">
+                                                {a.job?.title}
+                                            </p>
+                                            <p className="text-sm text-slate-500">{a.job?.company}</p>
+                                        </div>
+                                        <a
+                                            href={a.cvPath}
+                                            download
+                                            className="flex items-center gap-1 text-[#00a1a7] hover:underline text-sm"
+                                        >
+                                            <Download className="w-4 h-4" /> CV
+                                        </a>
+                                    </div>
+                                    <p className="text-sm text-slate-600 mt-2">
+                                        Status: <b className="text-slate-800">Submitted</b> — by{" "}
+                                        {a.name} ({a.email})
+                                    </p>
+                                </div>
+                            ))}
+                            {sentApps.length === 0 && (
+                                <p className="text-slate-500 text-sm">
+                                    You haven’t applied to any jobs yet.
+                                </p>
+                            )}
+                        </div>
+                    </section>
+                </div>
+            </div>
         </div>
     );
 }

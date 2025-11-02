@@ -1,41 +1,53 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import api from "../services/api.js";
-import {useAuth} from "../context/AuthContext.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
+import {
+    MapPin,
+    DollarSign,
+    CalendarDays,
+    ArrowLeft,
+    SendHorizonal,
+    Building2,
+} from "lucide-react";
 
 export default function JobDetail() {
     const { id } = useParams();
-    const { userEmail } = useAuth(); // ✅ pull userEmail from context
+    const { userEmail } = useAuth();
     const [job, setJob] = useState(null);
     const [status, setStatus] = useState("");
 
-    // Fetch job details on mount
+    // Helper: calculate "days ago"
+    const daysAgo = (dateString) => {
+        if (!dateString) return "N/A";
+        const posted = new Date(dateString);
+        const now = new Date();
+        const diff = Math.floor((now - posted) / (1000 * 60 * 60 * 24));
+        return diff === 0 ? "Today" : `${diff} day${diff > 1 ? "s" : ""} ago`;
+    };
+
     useEffect(() => {
-        api.get(`/jobs/${id}`)
+        api
+            .get(`/jobs/${id}`)
             .then((res) => setJob(res.data))
             .catch(() => setJob(null));
     }, [id]);
 
-    // Handle application submission
     const submit = async (e) => {
         e.preventDefault();
         setStatus("");
-
-        // ✅ Cache form before the await (critical!)
         const formEl = e.currentTarget;
         const form = new FormData(formEl);
-        if (userEmail) form.append("applicantEmail", userEmail); // ✅ auto-tag
-
+        if (userEmail) form.append("applicantEmail", userEmail);
         try {
             const res = await api.post(`/applications/${id}`, form, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
-
             if (res.data?.ok || res.data?._id || res.status === 201) {
                 setStatus("✅ Application submitted successfully!");
-                formEl.reset(); // ✅ Safe now — no async reference issue
+                formEl.reset();
             } else {
-                setStatus("⚠️ Submission succeeded but unexpected response.");
+                setStatus("⚠️ Unexpected response received.");
             }
         } catch (err) {
             console.error("❌ Application submit error:", err);
@@ -43,61 +55,118 @@ export default function JobDetail() {
         }
     };
 
-
-    if (!job) return <p className="text-gray-600">Loading…</p>;
+    if (!job)
+        return <p className="text-gray-600 text-center mt-20">Loading job details…</p>;
 
     return (
-        <div className="grid lg:grid-cols-3 gap-8">
-            {/* ---------- Left: Job Details ---------- */}
-            <div className="lg:col-span-2 bg-card rounded-2xl border p-6">
-                <h2 className="text-2xl font-bold text-secondary">{job.title}</h2>
-                <p className="text-gray-700">{job.company}</p>
-                <div className="mt-3 text-gray-800 whitespace-pre-wrap">{job.description}</div>
-                <div className="mt-4 flex gap-3 text-sm">
-                    {job.location && (
-                        <span className="px-3 py-1 bg-gray-100 rounded-lg">{job.location}</span>
-                    )}
-                    {job.salary && (
-                        <span className="px-3 py-1 bg-gray-100 rounded-lg">{job.salary}</span>
-                    )}
+        <div className="min-h-screen bg-[#f9fafb] text-slate-800 pb-20">
+            {/* ---------- Header Section ---------- */}
+            <div className="bg-gradient-to-r from-[#005072] to-[#00a1a7] text-white py-12 px-6 rounded-b-3xl shadow-md">
+                <div className="max-w-5xl mx-auto">
+                    <Link
+                        to="/"
+                        className="inline-flex items-center gap-2 text-white/80 hover:text-white mb-6"
+                    >
+                        <ArrowLeft className="w-4 h-4" /> Back to Jobs
+                    </Link>
+
+                    <h1 className="text-4xl font-bold mb-2">{job.title}</h1>
+                    <div className="flex items-center gap-2 text-white/80">
+                        <Building2 className="w-4 h-4" />
+                        <span>{job.company}</span>
+                    </div>
                 </div>
             </div>
 
-            {/* ---------- Right: Application Form ---------- */}
-            <div className="bg-card rounded-2xl border p-6">
-                <h3 className="text-xl font-semibold text-secondary">Apply Now</h3>
+            {/* ---------- Main Info Cards ---------- */}
+            <div className="max-w-5xl mx-auto mt-8 px-6 grid sm:grid-cols-3 gap-4">
+                {job.location && (
+                    <div className="bg-white border border-slate-200 rounded-xl p-4 flex items-center gap-3 shadow-sm">
+                        <MapPin className="w-5 h-5 text-[#005072]" />
+                        <div>
+                            <p className="text-xs uppercase text-slate-400">Location</p>
+                            <p className="font-medium text-slate-800">{job.location}</p>
+                        </div>
+                    </div>
+                )}
+                {job.salary && (
+                    <div className="bg-white border border-slate-200 rounded-xl p-4 flex items-center gap-3 shadow-sm">
+                        <DollarSign className="w-5 h-5 text-[#00a1a7]" />
+                        <div>
+                            <p className="text-xs uppercase text-slate-400">Salary</p>
+                            <p className="font-medium text-slate-800">{job.salary}</p>
+                        </div>
+                    </div>
+                )}
+                <div className="bg-white border border-slate-200 rounded-xl p-4 flex items-center gap-3 shadow-sm">
+                    <CalendarDays className="w-5 h-5 text-[#005072]" />
+                    <div>
+                        <p className="text-xs uppercase text-slate-400">Posted</p>
+                        <p className="font-medium text-slate-800">
+                            {daysAgo(job.createdAt)}
+                        </p>
+                    </div>
+                </div>
+            </div>
 
-                <form className="mt-4 flex flex-col gap-3" onSubmit={submit}>
-                    <input
-                        name="name"
-                        placeholder="Your Name"
-                        required
-                        className="px-4 py-3 border rounded-xl"
-                    />
-                    <input
-                        name="email"
-                        type="email"
-                        placeholder="Email"
-                        required
-                        className="px-4 py-3 border rounded-xl"
-                    />
-                    <input
-                        name="cv"
-                        type="file"
-                        accept=".pdf,.doc,.docx"
-                        required
-                        className="px-4 py-3 border rounded-xl bg-white"
-                    />
-                    <button
-                        className="mt-2 bg-secondary text-white px-4 py-3 rounded-xl hover:opacity-90 transition"
-                    >
-                        Submit Application
-                    </button>
+            {/* ---------- Description Section ---------- */}
+            <div className="max-w-5xl mx-auto mt-10 px-6">
+                <h2 className="text-2xl font-semibold text-slate-900 mb-3">
+                    Job Description
+                </h2>
+                <p className="text-slate-700 leading-relaxed whitespace-pre-wrap">
+                    {job.description}
+                </p>
 
-                    {/* ---------- Status Message ---------- */}
+                <p className="text-sm text-slate-400 mt-6 border-t pt-3">
+                    Posted on {new Date(job.createdAt).toLocaleDateString(undefined, {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                })}
+                </p>
+            </div>
+
+            {/* ---------- Application Form ---------- */}
+            <div className="max-w-5xl mx-auto mt-12 px-6">
+                <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-8">
+                    <h3 className="text-xl font-semibold text-slate-900 mb-4">
+                        Apply for this Position
+                    </h3>
+
+                    <form className="grid md:grid-cols-2 gap-4" onSubmit={submit}>
+                        <input
+                            name="name"
+                            placeholder="Your Name"
+                            required
+                            className="border border-slate-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-[#00a1a7] focus:border-transparent transition-all"
+                        />
+                        <input
+                            name="email"
+                            type="email"
+                            placeholder="Email"
+                            required
+                            className="border border-slate-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-[#00a1a7] focus:border-transparent transition-all"
+                        />
+                        <input
+                            name="cv"
+                            type="file"
+                            accept=".pdf,.doc,.docx"
+                            required
+                            className="md:col-span-2 border border-slate-300 rounded-xl px-4 py-3 bg-white focus:ring-2 focus:ring-[#00a1a7] focus:border-transparent transition-all"
+                        />
+
+                        <button
+                            className="md:col-span-2 mt-2 flex justify-center items-center gap-2 bg-gradient-to-r from-[#005072] to-[#00a1a7] text-white py-3 rounded-xl font-medium hover:opacity-90 transition"
+                        >
+                            <SendHorizonal className="w-4 h-4" />
+                            Submit Application
+                        </button>
+                    </form>
+
                     {status && (
                         <p
-                            className={`text-sm mt-2 ${
+                            className={`mt-4 text-sm ${
                                 status.includes("✅")
                                     ? "text-green-600"
                                     : status.includes("⚠️")
@@ -108,7 +177,7 @@ export default function JobDetail() {
                             {status}
                         </p>
                     )}
-                </form>
+                </div>
             </div>
         </div>
     );
