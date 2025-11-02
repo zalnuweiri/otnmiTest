@@ -1,5 +1,4 @@
 import { FaTiktok, FaInstagram, FaFacebookF } from "react-icons/fa";
-import MailingForm from "./MailingForm.jsx";
 import {useState} from "react";
 
 export default function Footer() {
