@@ -232,3 +232,36 @@ header a.border {
     .dashboard-stats { grid-template-columns: repeat(2, 1fr) !important; }
     .dashboard-sections { grid-template-columns: 1fr !important; }
 }
+
+/* --- STANDARDIZE DASHBOARD CARD HEIGHTS --- */
+
+/* Only apply to the data sections, not the stats */
+.dashboard-list {
+    display: grid;
+    gap: 1rem; /* same spacing you had before */
+    grid-auto-rows: 110px; /* every card exactly the same height */
+}
+
+/* Make each card lock to that height and center content */
+.dashboard-card {
+    height: 110px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+    padding: 1rem;
+}
+
+/* Clamp text so long titles/emails can’t expand height */
+.clamp-1 {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
