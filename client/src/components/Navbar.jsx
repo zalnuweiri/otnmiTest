@@ -24,9 +24,9 @@ export default function Navbar() {
               transition-all duration-500 hover:from-[#00a1a7] hover:to-[#005072]
               hover:scale-105 shadow-md hover:shadow-lg"
                     ></div>
-                    <span className="text-2xl font-semibold text-[#005072]">
-            JobSphere
-          </span>
+                    <span className="text-2xl font-semibold text-[#005072] hidden sm:inline">
+                        JobSphere
+                    </span>
                 </Link>
 
                 {/* ---------- Navigation Links ---------- */}
@@ -39,8 +39,8 @@ export default function Navbar() {
                             } hover:text-[#00a1a7] transition`
                         }
                     >
-                        <Briefcase className="w-4 h-4" />
-                        Browse Jobs
+                        <Briefcase className="w-5 h-5" />
+                        <span className="hidden sm:inline">Browse Jobs</span>
                     </NavLink>
 
                     {isAuthenticated && (
@@ -53,8 +53,8 @@ export default function Navbar() {
                                     } hover:text-[#00a1a7] transition`
                                 }
                             >
-                                <LayoutDashboard className="w-4 h-4" />
-                                Dashboard
+                                <LayoutDashboard className="w-5 h-5" />
+                                <span className="hidden sm:inline">Dashboard</span>
                             </NavLink>
 
                             <NavLink
@@ -65,8 +65,8 @@ export default function Navbar() {
                                     } hover:text-[#00a1a7] transition`
                                 }
                             >
-                                <PlusCircle className="w-4 h-4" />
-                                Post Job
+                                <PlusCircle className="w-5 h-5" />
+                                <span className="hidden sm:inline">Post Job</span>
                             </NavLink>
                         </>
                     )}
@@ -77,15 +77,15 @@ export default function Navbar() {
                                 to="/login"
                                 className="flex items-center gap-2 bg-[#00a1a7] text-white px-4 py-2 rounded-xl font-medium hover:opacity-90 transition"
                             >
-                                <LogIn className="w-4 h-4" />
-                                Login
+                                <LogIn className="w-5 h-5" />
+                                <span className="hidden sm:inline">Login</span>
                             </NavLink>
                             <NavLink
                                 to="/signup"
                                 className="flex items-center gap-2 border border-[#00a1a7] text-[#00a1a7] px-4 py-2 rounded-xl font-medium hover:bg-[#00a1a7] hover:text-white transition"
                             >
-                                <UserPlus className="w-4 h-4" />
-                                Sign Up
+                                <UserPlus className="w-5 h-5" />
+                                <span className="hidden sm:inline">Sign Up</span>
                             </NavLink>
                         </>
                     ) : (
@@ -96,8 +96,8 @@ export default function Navbar() {
                             }}
                             className="flex items-center gap-2 bg-[#005072] text-white px-4 py-2 rounded-xl font-medium hover:opacity-90 transition"
                         >
-                            <LogOut className="w-4 h-4" />
-                            Logout
+                            <LogOut className="w-5 h-5" />
+                            <span className="hidden sm:inline">Logout</span>
                         </button>
                     )}
                 </div>

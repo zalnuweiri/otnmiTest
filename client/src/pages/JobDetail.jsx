@@ -12,8 +12,8 @@ import {
 } from "lucide-react";
 
 export default function JobDetail() {
-    const { id } = useParams();
-    const { userEmail } = useAuth();
+    const {id} = useParams();
+    const {userEmail} = useAuth();
     const [job, setJob] = useState(null);
     const [status, setStatus] = useState("");
 
@@ -41,7 +41,7 @@ export default function JobDetail() {
         if (userEmail) form.append("applicantEmail", userEmail);
         try {
             const res = await api.post(`/applications/${id}`, form, {
-                headers: { "Content-Type": "multipart/form-data" },
+                headers: {"Content-Type": "multipart/form-data"},
             });
             if (res.data?.ok || res.data?._id || res.status === 201) {
                 setStatus("✅ Application submitted successfully!");
@@ -61,28 +61,29 @@ export default function JobDetail() {
     return (
         <div className="min-h-screen bg-[#f9fafb] text-slate-800 pb-20">
             {/* ---------- Header Section ---------- */}
-            <div className="bg-gradient-to-r from-[#005072] to-[#00a1a7] text-white py-12 px-6 rounded-b-3xl shadow-md">
+            <div
+                className="bg-gradient-to-r from-[#005072] to-[#00a1a7] text-white py-12 px-6 rounded-b-3xl shadow-md job-detail-header">
                 <div className="max-w-5xl mx-auto">
                     <Link
                         to="/"
                         className="inline-flex items-center gap-2 text-white/80 hover:text-white mb-6"
                     >
-                        <ArrowLeft className="w-4 h-4" /> Back to Jobs
+                        <ArrowLeft className="w-4 h-4"/> Back to Jobs
                     </Link>
 
                     <h1 className="text-4xl font-bold mb-2">{job.title}</h1>
                     <div className="flex items-center gap-2 text-white/80">
-                        <Building2 className="w-4 h-4" />
+                        <Building2 className="w-4 h-4"/>
                         <span>{job.company}</span>
                     </div>
                 </div>
             </div>
 
             {/* ---------- Main Info Cards ---------- */}
-            <div className="max-w-5xl mx-auto mt-8 px-6 grid sm:grid-cols-3 gap-4">
+            <div className="max-w-5xl mx-auto mt-8 px-6 grid sm:grid-cols-3 gap-4 job-detail-cards">
                 {job.location && (
                     <div className="bg-white border border-slate-200 rounded-xl p-4 flex items-center gap-3 shadow-sm">
-                        <MapPin className="w-5 h-5 text-[#005072]" />
+                        <MapPin className="w-5 h-5 text-[#005072]"/>
                         <div>
                             <p className="text-xs uppercase text-slate-400">Location</p>
                             <p className="font-medium text-slate-800">{job.location}</p>
@@ -91,7 +92,7 @@ export default function JobDetail() {
                 )}
                 {job.salary && (
                     <div className="bg-white border border-slate-200 rounded-xl p-4 flex items-center gap-3 shadow-sm">
-                        <DollarSign className="w-5 h-5 text-[#00a1a7]" />
+                        <DollarSign className="w-5 h-5 text-[#00a1a7]"/>
                         <div>
                             <p className="text-xs uppercase text-slate-400">Salary</p>
                             <p className="font-medium text-slate-800">{job.salary}</p>
@@ -99,7 +100,7 @@ export default function JobDetail() {
                     </div>
                 )}
                 <div className="bg-white border border-slate-200 rounded-xl p-4 flex items-center gap-3 shadow-sm">
-                    <CalendarDays className="w-5 h-5 text-[#005072]" />
+                    <CalendarDays className="w-5 h-5 text-[#005072]"/>
                     <div>
                         <p className="text-xs uppercase text-slate-400">Posted</p>
                         <p className="font-medium text-slate-800">
@@ -128,7 +129,7 @@ export default function JobDetail() {
             </div>
 
             {/* ---------- Application Form ---------- */}
-            <div className="max-w-5xl mx-auto mt-12 px-6">
+            <div className="max-w-5xl mx-auto mt-12 px-6 job-detail-apply">
                 <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-8">
                     <h3 className="text-xl font-semibold text-slate-900 mb-4">
                         Apply for this Position
@@ -159,7 +160,7 @@ export default function JobDetail() {
                         <button
                             className="md:col-span-2 mt-2 flex justify-center items-center gap-2 bg-gradient-to-r from-[#005072] to-[#00a1a7] text-white py-3 rounded-xl font-medium hover:opacity-90 transition"
                         >
-                            <SendHorizonal className="w-4 h-4" />
+                            <SendHorizonal className="w-4 h-4"/>
                             Submit Application
                         </button>
                     </form>

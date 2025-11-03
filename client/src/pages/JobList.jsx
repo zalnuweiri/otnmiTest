@@ -59,28 +59,27 @@ export default function JobList() {
     if (loading) {
         return (
             <div className="flex flex-col items-center justify-center min-h-screen bg-[#f9fafb] text-slate-600">
-                <Loader2 className="animate-spin w-10 h-10 text-[#00a1a7] mb-4" />
+                <Loader2 className="animate-spin w-10 h-10 text-[#00a1a7] mb-4"/>
                 <p className="text-sm">Loading job listings…</p>
             </div>
         );
     }
 
-    // ---------- MAIN CONTENT ----------
     return (
         <div className="min-h-screen bg-[#f9fafb] text-slate-800">
             <div className="max-w-6xl mx-auto px-6 py-16">
                 {/* ---------- Header ---------- */}
-                <div className="flex justify-between items-center mb-8">
+                <div className="flex justify-between items-center mb-8 job-list-header">
                     <div>
                         <h1 className="text-4xl font-bold text-slate-900 mb-1">
                             Find Your Next{" "}
                             <span
                                 className="bg-gradient-to-r from-[#005072] to-[#00a1a7] bg-clip-text text-transparent
-                           transition-all duration-500 hover:from-[#00a1a7] hover:to-[#005072]
-                           hover:scale-105 inline-block"
+               transition-all duration-500 hover:from-[#00a1a7] hover:to-[#005072]
+               hover:scale-105 inline-block"
                             >
-                Role
-              </span>
+              Role
+            </span>
                         </h1>
                         <p className="text-slate-500">
                             Explore opportunities posted by employers.
@@ -89,9 +88,8 @@ export default function JobList() {
                     <p className="text-sm text-slate-500 mt-4 lg:mt-0">
                         Showing{" "}
                         <span className="font-semibold text-slate-700">
-              {indexOfFirstJob + 1}–
-                            {Math.min(indexOfLastJob, totalJobs) || 0}
-            </span>{" "}
+            {indexOfFirstJob + 1}–{Math.min(indexOfLastJob, totalJobs) || 0}
+          </span>{" "}
                         of <span className="font-semibold">{totalJobs}</span> jobs
                     </p>
                 </div>
@@ -110,17 +108,17 @@ export default function JobList() {
                 </div>
 
                 {/* ---------- Job Cards ---------- */}
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 job-list-grid">
                     {currentJobs.map((job) => (
                         <div
                             key={job._id}
-                            className="group bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+                            className="group bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 job-list-card"
                         >
                             <div className="flex justify-between items-start">
                                 <h2 className="text-xl font-semibold text-slate-800 group-hover:text-[#005072] transition">
                                     {job.title}
                                 </h2>
-                                <Briefcase className="w-5 h-5 text-[#005072] opacity-70" />
+                                <Briefcase className="w-5 h-5 text-[#005072] opacity-70"/>
                             </div>
 
                             <p className="text-slate-500 mt-1">{job.company}</p>
@@ -130,20 +128,22 @@ export default function JobList() {
 
                             <div className="flex flex-wrap gap-2 mt-4 text-sm">
                                 {job.location && (
-                                    <span className="flex items-center gap-1 px-3 py-1 bg-slate-100 text-slate-700 rounded-full">
-                    <MapPin className="w-4 h-4" /> {job.location}
-                  </span>
+                                    <span
+                                        className="flex items-center gap-1 px-3 py-1 bg-slate-100 text-slate-700 rounded-full">
+                  <MapPin className="w-4 h-4"/> {job.location}
+                </span>
                                 )}
                                 {job.salary && (
-                                    <span className="flex items-center gap-1 px-3 py-1 bg-slate-100 text-slate-700 rounded-full">
-                    <DollarSign className="w-4 h-4" /> {job.salary}
-                  </span>
+                                    <span
+                                        className="flex items-center gap-1 px-3 py-1 bg-slate-100 text-slate-700 rounded-full">
+                  <DollarSign className="w-4 h-4"/> {job.salary}
+                </span>
                                 )}
                             </div>
 
                             <div className="flex items-center justify-between mt-5">
                                 <div className="flex items-center gap-1 text-xs text-slate-400">
-                                    <CalendarDays className="w-4 h-4" />
+                                    <CalendarDays className="w-4 h-4"/>
                                     <span>{daysAgo(job.createdAt)}</span>
                                 </div>
 

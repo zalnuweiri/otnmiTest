@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 
 export default function PostJob() {
-    const { publisherKey } = useAuth();
+    const {publisherKey} = useAuth();
     const [status, setStatus] = useState("");
     const [isVisible, setIsVisible] = useState(false);
     const [redirectHome, setRedirectHome] = useState(false);
@@ -45,7 +45,8 @@ export default function PostJob() {
 
     return (
         <div className="min-h-screen bg-[#f9fafb] text-slate-800 overflow-hidden">
-            <div className="bg-gradient-to-r from-[#005072] to-[#00a1a7] text-white py-12 px-6 rounded-b-3xl shadow-md">
+            <div
+                className="bg-gradient-to-r from-[#005072] to-[#00a1a7] text-white py-12 px-6 rounded-b-3xl shadow-md post-job-header">
                 <div className="max-w-4xl mx-auto">
                     <h1 className="text-4xl font-bold mb-2">Post a Job</h1>
                     <p className="text-white/80">
@@ -60,9 +61,9 @@ export default function PostJob() {
                 }`}
             >
                 <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-8">
-                    <form className="grid md:grid-cols-2 gap-6" onSubmit={submit}>
+                    <form className="grid md:grid-cols-2 gap-6 post-job-form" onSubmit={submit}>
                         <div className="relative">
-                            <Briefcase className="w-4 h-4 absolute left-4 top-4 text-slate-400" />
+                            <Briefcase className="w-4 h-4 absolute left-4 top-4 text-slate-400"/>
                             <input
                                 name="title"
                                 placeholder="Job Title"
@@ -71,7 +72,7 @@ export default function PostJob() {
                             />
                         </div>
                         <div className="relative">
-                            <Building2 className="w-4 h-4 absolute left-4 top-4 text-slate-400" />
+                            <Building2 className="w-4 h-4 absolute left-4 top-4 text-slate-400"/>
                             <input
                                 name="company"
                                 placeholder="Company Name"
@@ -80,7 +81,7 @@ export default function PostJob() {
                             />
                         </div>
                         <div className="relative">
-                            <MapPin className="w-4 h-4 absolute left-4 top-4 text-slate-400" />
+                            <MapPin className="w-4 h-4 absolute left-4 top-4 text-slate-400"/>
                             <input
                                 name="location"
                                 placeholder="Location (optional)"
@@ -88,7 +89,7 @@ export default function PostJob() {
                             />
                         </div>
                         <div className="relative">
-                            <DollarSign className="w-4 h-4 absolute left-4 top-4 text-slate-400" />
+                            <DollarSign className="w-4 h-4 absolute left-4 top-4 text-slate-400"/>
                             <input
                                 name="salary"
                                 placeholder="Salary (optional)"
@@ -96,7 +97,7 @@ export default function PostJob() {
                             />
                         </div>
                         <div className="relative md:col-span-2">
-                            <FileText className="w-4 h-4 absolute left-4 top-4 text-slate-400" />
+                            <FileText className="w-4 h-4 absolute left-4 top-4 text-slate-400"/>
                             <textarea
                                 name="description"
                                 placeholder="Job Description"
@@ -106,8 +107,9 @@ export default function PostJob() {
                         </div>
 
                         <div className="md:col-span-2 flex items-center justify-end mt-2">
-                            <button className="flex items-center gap-2 bg-gradient-to-r from-[#005072] to-[#00a1a7] text-white px-5 py-3 rounded-xl font-medium hover:opacity-90 transition">
-                                <SendHorizonal className="w-4 h-4" />
+                            <button
+                                className="flex items-center gap-2 bg-gradient-to-r from-[#005072] to-[#00a1a7] text-white px-5 py-3 rounded-xl font-medium hover:opacity-90 transition">
+                                <SendHorizonal className="w-4 h-4"/>
                                 Create Job
                             </button>
                         </div>

@@ -80,7 +80,7 @@ export default function Dashboard() {
                 </h1>
 
                 {/* ---------- Stats Cards ---------- */}
-                <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+                <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10 dashboard-stats">
                     {/* Total Jobs */}
                     <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
                         <div className="p-3 bg-gradient-to-r from-[#005072] to-[#00a1a7] rounded-xl">
@@ -147,7 +147,7 @@ export default function Dashboard() {
                 </div>
 
                 {/* ---------- Data Sections ---------- */}
-                <div className="grid lg:grid-cols-3 gap-8">
+                <div className="grid lg:grid-cols-3 gap-8 dashboard-sections">
                     {/* ---------- My Jobs ---------- */}
                     <section className="bg-white border border-slate-200 rounded-2xl shadow-sm p-6">
                         <div className="flex items-center gap-2 mb-4">

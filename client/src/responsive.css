@@ -1,0 +1,199 @@
+/* -------------------------
+   GLOBAL & LAYOUT ADJUSTMENTS
+-------------------------- */
+@media (max-width: 1280px) {
+    .max-w-6xl,
+    .max-w-5xl,
+    .max-w-4xl {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+}
+
+@media (max-width: 1024px) {
+    .text-4xl {
+        font-size: 1.9rem !important;
+    }
+    .text-2xl {
+        font-size: 1.35rem !important;
+    }
+    .py-16 {
+        padding-top: 3rem !important;
+        padding-bottom: 3rem !important;
+    }
+}
+
+/* -------------------------
+   JOB LIST PAGE
+-------------------------- */
+@media (max-width: 1024px) {
+    .job-list-header {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 1rem !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .job-list-header h1 {
+        font-size: 1.75rem !important;
+    }
+    .job-list-header p {
+        font-size: 0.9rem !important;
+    }
+    .job-list-grid {
+        grid-template-columns: 1fr !important;
+    }
+    .job-list-card {
+        padding: 1.25rem !important;
+    }
+    .job-list-card h2 {
+        font-size: 1.1rem !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .job-list-header h1 {
+        font-size: 1.5rem !important;
+    }
+    .job-list-header span {
+        display: block;
+    }
+}
+
+/* -------------------------
+   JOB DETAIL PAGE
+-------------------------- */
+@media (max-width: 1024px) {
+    .job-detail-header h1 {
+        font-size: 1.8rem !important;
+    }
+    .job-detail-header .flex {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .job-detail-cards {
+        grid-template-columns: 1fr !important;
+    }
+    .job-detail-cards div {
+        flex-direction: row !important;
+    }
+    .job-detail-apply form {
+        grid-template-columns: 1fr !important;
+    }
+    .job-detail-apply input,
+    .job-detail-apply textarea,
+    .job-detail-apply button {
+        width: 100% !important;
+        font-size: 0.95rem !important;
+    }
+}
+
+/* -------------------------
+   POST JOB PAGE
+-------------------------- */
+@media (max-width: 1024px) {
+    .post-job-header h1 {
+        font-size: 1.9rem !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .post-job-form {
+        grid-template-columns: 1fr !important;
+    }
+    .post-job-form input,
+    .post-job-form textarea {
+        font-size: 0.95rem !important;
+    }
+    .post-job-form button {
+        width: 100% !important;
+        justify-content: center;
+    }
+}
+
+/* -------------------------
+   DASHBOARD PAGE
+-------------------------- */
+@media (max-width: 1280px) {
+    .dashboard-stats {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+    .dashboard-sections {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-stats {
+        grid-template-columns: 1fr !important;
+    }
+    .dashboard-stats p.text-2xl {
+        font-size: 1.4rem !important;
+    }
+    .dashboard-sections section {
+        padding: 1.25rem !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .dashboard-stats p.text-2xl {
+        font-size: 1.2rem !important;
+    }
+}
+
+
+/* ---------------------------------------
+   NAVBAR RESPONSIVE FIX
+---------------------------------------- */
+@media (max-width: 900px) {
+    header nav {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 1rem !important;
+    }
+
+    header nav > a,
+    header nav > div {
+        width: 100% !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+    }
+
+    /* Make logo + text stack properly */
+    header .flex.items-center.gap-2 {
+        margin-bottom: 0.75rem !important;
+    }
+
+    /* Navigation links collapse into column */
+    header .flex.items-center.gap-6 {
+        flex-wrap: wrap !important;
+        gap: 0.75rem !important;
+    }
+
+    /* Logout button spans full width for small screens */
+    header button.bg-secondary,
+    header a.bg-primary {
+        width: 100% !important;
+        justify-content: center !important;
+    }
+}
+
+@media (max-width: 500px) {
+    header nav {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+
+    header .text-2xl {
+        font-size: 1.25rem !important;
+    }
+
+    header .flex.items-center.gap-6 a {
+        font-size: 0.9rem !important;
+    }
+}
