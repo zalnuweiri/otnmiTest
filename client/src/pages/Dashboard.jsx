@@ -92,6 +92,7 @@ export default function Dashboard() {
     const [receivedApps, setReceivedApps] = useState([]);
     const [sentApps, setSentApps] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [showScrollHint, setShowScrollHint] = useState(false);
 
     // Fetch dashboard data
     useEffect(() => {
@@ -117,6 +118,13 @@ export default function Dashboard() {
             } finally {
                 setLoading(false);
             }
+            // Detect scrollable dashboard sections on mobile
+            setTimeout(() => {
+                const scrollContainer = document.querySelector(".dashboard-sections");
+                if (scrollContainer && scrollContainer.scrollWidth > scrollContainer.clientWidth) {
+                    setShowScrollHint(true);
+                }
+            }, 300);
         };
 
         if (isAuthenticated && publisherKey) fetchData();
@@ -235,12 +243,8 @@ export default function Dashboard() {
                 </div>
 
                 {/* ---------- Data Sections (All Paginated) ---------- */}
-                <div
-                    className="
-            flex flex-nowrap gap-6 overflow-x-auto md:overflow-x-visible snap-x snap-mandatory scroll-smooth
-            md:grid md:gap-8 md:grid-cols-3 dashboard-sections
-          "
-                >
+                <div className=" flex flex-nowrap gap-6 overflow-x-auto md:overflow-x-visible snap-x snap-mandatory scroll-smooth
+                                md:grid md:gap-8 md:grid-cols-3 dashboard-sections">
                     {/* ---------- My Jobs ---------- */}
                     <PaginatedSection
                         title="My Jobs"
@@ -327,6 +331,22 @@ export default function Dashboard() {
                         )}
                     />
                 </div>
+                {showScrollHint && (
+                    <div className="md:hidden mt-4 flex justify-center items-center gap-2 text-slate-400 text-sm animate-pulse">
+                        <span>Swipe to view more</span>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="w-4 h-4"
+                        >
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                        </svg>
+                    </div>
+                )}
+
             </div>
         </div>
     );
