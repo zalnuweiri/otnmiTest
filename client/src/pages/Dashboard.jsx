@@ -93,6 +93,8 @@ export default function Dashboard() {
     const [sentApps, setSentApps] = useState([]);
     const [loading, setLoading] = useState(true);
     const [showScrollHint, setShowScrollHint] = useState(false);
+    const [showStatsScrollHint, setShowStatsScrollHint] = useState(false);
+
 
     // Fetch dashboard data
     useEffect(() => {
@@ -120,11 +122,17 @@ export default function Dashboard() {
             }
             // Detect scrollable dashboard sections on mobile
             setTimeout(() => {
-                const scrollContainer = document.querySelector(".dashboard-sections");
-                if (scrollContainer && scrollContainer.scrollWidth > scrollContainer.clientWidth) {
+                const statsContainer = document.querySelector(".dashboard-stats");
+                const dataContainer = document.querySelector(".dashboard-sections");
+
+                if (statsContainer && statsContainer.scrollWidth > statsContainer.clientWidth) {
+                    setShowStatsScrollHint(true);
+                }
+                if (dataContainer && dataContainer.scrollWidth > dataContainer.clientWidth) {
                     setShowScrollHint(true);
                 }
             }, 300);
+
         };
 
         if (isAuthenticated && publisherKey) fetchData();
@@ -167,12 +175,8 @@ export default function Dashboard() {
                 </h1>
 
                 {/* ---------- Stats Cards ---------- */}
-                <div
-                    className="
-            flex flex-nowrap gap-4 overflow-x-auto md:overflow-x-visible snap-x snap-mandatory scroll-smooth
-            md:grid md:grid-cols-4 md:gap-6 mb-10 dashboard-stats
-          "
-                >
+                <div className="flex flex-nowrap gap-4 overflow-x-auto md:overflow-x-visible snap-x snap-mandatory scroll-smooth
+                    md:grid md:grid-cols-4 md:gap-6 mb-10 dashboard-stats">
                     {/* Total Jobs */}
                     <div className="shrink-0 min-w-[85%] md:min-w-0 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4 snap-start">
                         <div className="p-3 bg-gradient-to-r from-[#005072] to-[#00a1a7] rounded-xl">
@@ -240,6 +244,21 @@ export default function Dashboard() {
                             <p className="text-xs text-slate-400">Last 7 days</p>
                         </div>
                     </div>
+                    {showStatsScrollHint && (
+                        <div className="md:hidden mt-4 mb-6 flex justify-center items-center gap-2 text-slate-400 text-sm animate-pulse">
+                            <span>Swipe to view more</span>
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth={1.5}
+                                stroke="currentColor"
+                                className="w-4 h-4"
+                            >
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                            </svg>
+                        </div>
+                    )}
                 </div>
 
                 {/* ---------- Data Sections (All Paginated) ---------- */}
