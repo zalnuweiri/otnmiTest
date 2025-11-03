@@ -149,13 +149,32 @@ export default function JobDetail() {
                             required
                             className="border border-slate-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-[#00a1a7] focus:border-transparent transition-all"
                         />
-                        <input
-                            name="cv"
-                            type="file"
-                            accept=".pdf,.doc,.docx"
-                            required
-                            className="md:col-span-2 border border-slate-300 rounded-xl px-4 py-3 bg-white focus:ring-2 focus:ring-[#00a1a7] focus:border-transparent transition-all"
-                        />
+                        <div className="md:col-span-2 relative group">
+                            <label
+                                htmlFor="cv"
+                                className="flex items-center justify-between w-full border border-slate-300 rounded-xl px-4 py-3 bg-white cursor-pointer text-slate-500 hover:text-[#005072] hover:border-[#00a1a7] transition-all"
+                            >
+    <span id="fileLabel" className="truncate">
+      Choose file to upload (PDF, DOC, DOCX)
+    </span>
+                                <span className="text-[#00a1a7] font-medium group-hover:text-[#005072]">
+      Browse
+    </span>
+                            </label>
+
+                            <input
+                                id="cv"
+                                name="cv"
+                                type="file"
+                                accept=".pdf,.doc,.docx"
+                                required
+                                className="absolute inset-0 opacity-0 cursor-pointer"
+                                onChange={(e) => {
+                                    const fileName = e.target.files?.[0]?.name || "Choose file to upload (PDF, DOC, DOCX)";
+                                    document.getElementById("fileLabel").textContent = fileName;
+                                }}
+                            />
+                        </div>
 
                         <button
                             className="md:col-span-2 mt-2 flex justify-center items-center gap-2 bg-gradient-to-r from-[#005072] to-[#00a1a7] text-white py-3 rounded-xl font-medium hover:opacity-90 transition"
