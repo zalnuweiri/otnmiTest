@@ -265,3 +265,12 @@ header a.border {
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
+
+@media (max-width: 640px) {
+    footer {
+        padding: 2rem 1rem !important;
+    }
+    footer p {
+        font-size: 0.9rem !important;
+    }
+}

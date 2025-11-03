@@ -9,6 +9,7 @@ import Login from "./pages/Login.jsx";
 import Signup from "./pages/Signup.jsx";
 import NotFound from "./pages/NotFound.jsx";
 import { AuthProvider, useAuth } from "./context/AuthContext.jsx";
+import Footer from "./components/Footer.jsx";
 
 // 👇 Replace old "EmployerRoute" with more flexible private route
 function PrivateRoute({ children }) {
@@ -51,6 +52,7 @@ export default function App() {
                         <Route path="*" element={<NotFound />} />
                     </Routes>
                 </main>
+                <Footer />
             </div>
         </AuthProvider>
     );
