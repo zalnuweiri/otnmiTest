@@ -80,9 +80,14 @@ export default function Dashboard() {
                 </h1>
 
                 {/* ---------- Stats Cards ---------- */}
-                <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10 dashboard-stats">
+                <div
+                    className="
+    flex flex-nowrap gap-4 overflow-x-auto md:overflow-x-visible snap-x snap-mandatory scroll-smooth
+    md:grid md:grid-cols-4 md:gap-6 mb-10 dashboard-stats
+  "
+                >
                     {/* Total Jobs */}
-                    <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+                    <div className="shrink-0 min-w-[85%] md:min-w-0 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4 snap-start">
                         <div className="p-3 bg-gradient-to-r from-[#005072] to-[#00a1a7] rounded-xl">
                             <Briefcase className="text-white w-6 h-6" />
                         </div>
@@ -93,7 +98,7 @@ export default function Dashboard() {
                     </div>
 
                     {/* Total Applications */}
-                    <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+                    <div className="shrink-0 min-w-[85%] md:min-w-0 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4 snap-start">
                         <div className="p-3 bg-gradient-to-r from-[#00a1a7] to-[#0097b2] rounded-xl">
                             <User className="text-white w-6 h-6" />
                         </div>
@@ -106,52 +111,46 @@ export default function Dashboard() {
                     </div>
 
                     {/* Recent Jobs */}
-                    <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+                    <div className="shrink-0 min-w-[85%] md:min-w-0 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4 snap-start">
                         <div className="p-3 bg-gradient-to-r from-[#8b5cf6] to-[#6366f1] rounded-xl">
                             <SendHorizonal className="text-white w-6 h-6" />
                         </div>
                         <div>
                             <p className="text-sm text-slate-500 font-medium">Recent Jobs</p>
                             <p className="text-2xl font-semibold text-slate-900">
-                                {
-                                    jobs.filter((j) => {
-                                        const created = new Date(j.createdAt);
-                                        const diffDays = (Date.now() - created) / (1000 * 60 * 60 * 24);
-                                        return diffDays <= 7;
-                                    }).length
-                                }
+                                {jobs.filter(j => (Date.now() - new Date(j.createdAt)) / 86400000 <= 7).length}
                             </p>
                             <p className="text-xs text-slate-400">Last 7 days</p>
                         </div>
                     </div>
 
                     {/* Recent Applications */}
-                    <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+                    <div className="shrink-0 min-w-[85%] md:min-w-0 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4 snap-start">
                         <div className="p-3 bg-gradient-to-r from-[#f97316] to-[#fb923c] rounded-xl">
                             <Mail className="text-white w-6 h-6" />
                         </div>
                         <div>
                             <p className="text-sm text-slate-500 font-medium">Recent Applications</p>
                             <p className="text-2xl font-semibold text-slate-900">
-                                {
-                                    receivedApps.filter((a) => {
-                                        const created = new Date(a.createdAt);
-                                        const diffDays = (Date.now() - created) / (1000 * 60 * 60 * 24);
-                                        return diffDays <= 7;
-                                    }).length
-                                }
+                                {receivedApps.filter(a => (Date.now() - new Date(a.createdAt)) / 86400000 <= 7).length}
                             </p>
                             <p className="text-xs text-slate-400">Last 7 days</p>
                         </div>
                     </div>
                 </div>
 
+
                 {/* ---------- Data Sections ---------- */}
-                <div className="grid lg:grid-cols-3 gap-8 dashboard-sections">
+                <div
+                    className="
+    flex flex-nowrap gap-6 overflow-x-auto md:overflow-x-visible snap-x snap-mandatory scroll-smooth
+    md:grid md:gap-8 md:grid-cols-3 dashboard-sections
+  "
+                >
                     {/* ---------- My Jobs ---------- */}
-                    <section className="bg-white border border-slate-200 rounded-2xl shadow-sm p-6">
+                    <section className="shrink-0 min-w-[90%] md:min-w-0 bg-white border border-slate-200 rounded-2xl shadow-sm p-6 snap-start">
                         <div className="flex items-center gap-2 mb-4">
-                            <Briefcase className="w-5 h-5 text-[#005072]" />
+                            <Briefcase className="w-5 h-5 text-[#005072]"/>
                             <h2 className="text-xl font-semibold text-slate-900">My Jobs</h2>
                         </div>
 
@@ -175,7 +174,7 @@ export default function Dashboard() {
                                         className="text-red-600 hover:text-red-700"
                                         title="Delete job"
                                     >
-                                        <Trash2 className="w-4 h-4" />
+                                        <Trash2 className="w-4 h-4"/>
                                     </button>
                                 </div>
                             ))}
@@ -186,9 +185,10 @@ export default function Dashboard() {
                     </section>
 
                     {/* ---------- Received Applications ---------- */}
-                    <section className="bg-white border border-slate-200 rounded-2xl shadow-sm p-6">
+                    <section
+                        className="shrink-0 min-w-[90%] md:min-w-0 bg-white border border-slate-200 rounded-2xl shadow-sm p-6 snap-start">
                         <div className="flex items-center gap-2 mb-4">
-                            <Mail className="w-5 h-5 text-[#00a1a7]" />
+                            <Mail className="w-5 h-5 text-[#00a1a7]"/>
                             <h2 className="text-xl font-semibold text-slate-900">
                                 Received Applications
                             </h2>
@@ -210,7 +210,7 @@ export default function Dashboard() {
                                             download
                                             className="flex items-center gap-1 text-[#00a1a7] hover:underline text-sm"
                                         >
-                                            <Download className="w-4 h-4" /> CV
+                                            <Download className="w-4 h-4"/> CV
                                         </a>
                                     </div>
                                     <p className="text-sm text-slate-600 mt-2">
@@ -229,9 +229,10 @@ export default function Dashboard() {
                     </section>
 
                     {/* ---------- Sent Applications ---------- */}
-                    <section className="bg-white border border-slate-200 rounded-2xl shadow-sm p-6">
+                    <section
+                        className="shrink-0 min-w-[90%] md:min-w-0 bg-white border border-slate-200 rounded-2xl shadow-sm p-6 snap-start">
                         <div className="flex items-center gap-2 mb-4">
-                            <SendHorizonal className="w-5 h-5 text-[#005072]" />
+                            <SendHorizonal className="w-5 h-5 text-[#005072]"/>
                             <h2 className="text-xl font-semibold text-slate-900">
                                 Sent Applications
                             </h2>
@@ -255,7 +256,7 @@ export default function Dashboard() {
                                             download
                                             className="flex items-center gap-1 text-[#00a1a7] hover:underline text-sm"
                                         >
-                                            <Download className="w-4 h-4" /> CV
+                                            <Download className="w-4 h-4"/> CV
                                         </a>
                                     </div>
                                     <p className="text-sm text-slate-600 mt-2">
