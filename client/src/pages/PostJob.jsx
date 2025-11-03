@@ -1,19 +1,17 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import api from "../services/api.js";
 import { useAuth } from "../context/AuthContext.jsx";
 import {
-    Briefcase,
-    Building2,
-    MapPin,
-    DollarSign,
-    FileText,
-    SendHorizonal,
+    Briefcase, Building2, MapPin, DollarSign, FileText, SendHorizonal,
 } from "lucide-react";
 
 export default function PostJob() {
     const { publisherKey } = useAuth();
     const [status, setStatus] = useState("");
     const [isVisible, setIsVisible] = useState(false);
+    const [redirectHome, setRedirectHome] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const timer = setTimeout(() => setIsVisible(true), 100);
@@ -26,19 +24,27 @@ export default function PostJob() {
         const form = new FormData(e.currentTarget);
         const payload = Object.fromEntries(form.entries());
         payload.publisherKey = publisherKey;
+
         try {
             await api.post("/jobs", payload);
             setStatus("Job posted!");
-            e.currentTarget.reset();
+            if (e?.currentTarget) e.currentTarget.reset();
+
+            // ✅ trigger redirect state after short delay
+            setTimeout(() => setRedirectHome(true), 1200);
         } catch (e) {
-            console.error("❌ Post job error:", err);
-            setStatus(err?.response?.data?.message || "Failed to post job");
+            console.error("❌ Post job error:", e);
+            setStatus(e?.response?.data?.message || "Failed to post job");
         }
     };
 
+    // ✅ perform redirect from render (not inside submit)
+    useEffect(() => {
+        if (redirectHome) navigate("/");
+    }, [redirectHome, navigate]);
+
     return (
         <div className="min-h-screen bg-[#f9fafb] text-slate-800 overflow-hidden">
-            {/* ---------- Header Banner ---------- */}
             <div className="bg-gradient-to-r from-[#005072] to-[#00a1a7] text-white py-12 px-6 rounded-b-3xl shadow-md">
                 <div className="max-w-4xl mx-auto">
                     <h1 className="text-4xl font-bold mb-2">Post a Job</h1>
@@ -48,7 +54,6 @@ export default function PostJob() {
                 </div>
             </div>
 
-            {/* ---------- Form Section ---------- */}
             <div
                 className={`max-w-4xl mx-auto mt-10 px-6 transform transition-all duration-700 ease-out ${
                     isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
@@ -56,7 +61,6 @@ export default function PostJob() {
             >
                 <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-8">
                     <form className="grid md:grid-cols-2 gap-6" onSubmit={submit}>
-                        {/* Job Title */}
                         <div className="relative">
                             <Briefcase className="w-4 h-4 absolute left-4 top-4 text-slate-400" />
                             <input
@@ -66,8 +70,6 @@ export default function PostJob() {
                                 className="pl-10 w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#00a1a7] focus:border-transparent transition-all"
                             />
                         </div>
-
-                        {/* Company Name */}
                         <div className="relative">
                             <Building2 className="w-4 h-4 absolute left-4 top-4 text-slate-400" />
                             <input
@@ -77,8 +79,6 @@ export default function PostJob() {
                                 className="pl-10 w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#00a1a7] focus:border-transparent transition-all"
                             />
                         </div>
-
-                        {/* Location */}
                         <div className="relative">
                             <MapPin className="w-4 h-4 absolute left-4 top-4 text-slate-400" />
                             <input
@@ -87,8 +87,6 @@ export default function PostJob() {
                                 className="pl-10 w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#00a1a7] focus:border-transparent transition-all"
                             />
                         </div>
-
-                        {/* Salary */}
                         <div className="relative">
                             <DollarSign className="w-4 h-4 absolute left-4 top-4 text-slate-400" />
                             <input
@@ -97,8 +95,6 @@ export default function PostJob() {
                                 className="pl-10 w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#00a1a7] focus:border-transparent transition-all"
                             />
                         </div>
-
-                        {/* Job Description */}
                         <div className="relative md:col-span-2">
                             <FileText className="w-4 h-4 absolute left-4 top-4 text-slate-400" />
                             <textarea
@@ -109,7 +105,6 @@ export default function PostJob() {
                             />
                         </div>
 
-                        {/* Footer */}
                         <div className="md:col-span-2 flex items-center justify-end mt-2">
                             <button className="flex items-center gap-2 bg-gradient-to-r from-[#005072] to-[#00a1a7] text-white px-5 py-3 rounded-xl font-medium hover:opacity-90 transition">
                                 <SendHorizonal className="w-4 h-4" />
@@ -117,10 +112,7 @@ export default function PostJob() {
                             </button>
                         </div>
                     </form>
-
-                    {status && (
-                        <p className="mt-4 text-sm text-slate-700">{status}</p>
-                    )}
+                    {status && <p className="mt-4 text-sm text-slate-700">{status}</p>}
                 </div>
             </div>
         </div>

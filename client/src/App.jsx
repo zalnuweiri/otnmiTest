@@ -5,8 +5,8 @@ import JobList from "./pages/JobList.jsx";
 import JobDetail from "./pages/JobDetail.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import PostJob from "./pages/PostJob.jsx";
-import Login from "./pages/Login.jsx";     // ✅ new
-import Signup from "./pages/Signup.jsx";   // ✅ new
+import Login from "./pages/Login.jsx";
+import Signup from "./pages/Signup.jsx";
 import NotFound from "./pages/NotFound.jsx";
 import { AuthProvider, useAuth } from "./context/AuthContext.jsx";
 

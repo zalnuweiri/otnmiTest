@@ -9,6 +9,7 @@ import {
     Trash2,
     Download,
     SendHorizonal,
+    Loader2,
 } from "lucide-react";
 
 export default function Dashboard() {
@@ -16,30 +17,31 @@ export default function Dashboard() {
     const [jobs, setJobs] = useState([]);
     const [receivedApps, setReceivedApps] = useState([]);
     const [sentApps, setSentApps] = useState([]);
+    const [loading, setLoading] = useState(true); // 👈 NEW
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // --- 1️⃣ Jobs posted by this employer ---
                 const jobUrl = `/jobs?dashboard=true&publisherKey=${publisherKey}`;
                 const jobRes = await api.get(jobUrl);
                 setJobs(jobRes.data);
 
-                // --- 2️⃣ Applications received for this employer's jobs ---
                 const receivedRes = await api.get(`/applications?publisherKey=${publisherKey}`);
                 setReceivedApps(receivedRes.data);
 
-                // --- 3️⃣ Applications sent by this user as applicant ---
                 if (userEmail) {
                     const sentRes = await api.get(`/applications?applicantEmail=${userEmail}`);
                     setSentApps(sentRes.data);
                 }
             } catch (e) {
                 console.error("Dashboard fetch error:", e);
+            } finally {
+                setLoading(false); // 👈 Spinner disappears after all data loads
             }
         };
 
         if (isAuthenticated && publisherKey) fetchData();
+        else setLoading(false);
     }, [publisherKey, userEmail, isAuthenticated]);
 
     const remove = async (id) => {
@@ -52,14 +54,29 @@ export default function Dashboard() {
         }
     };
 
+    // ---------- LOADING SPINNER ----------
+    if (loading) {
+        return (
+            <div className="flex flex-col items-center justify-center min-h-screen bg-[#f9fafb] text-slate-600">
+                <Loader2 className="animate-spin w-10 h-10 text-[#00a1a7] mb-4" />
+                <p className="text-sm">Loading your dashboard…</p>
+            </div>
+        );
+    }
+
+    // ---------- MAIN DASHBOARD ----------
     return (
         <div className="min-h-screen bg-[#f9fafb] py-16 px-6">
             <div className="max-w-6xl mx-auto">
                 <h1 className="text-4xl font-bold text-slate-900 mb-10">
-                    Your <span className="bg-gradient-to-r from-[#005072] to-[#00a1a7] bg-clip-text text-transparent
-                                           transition-all duration-500 hover:from-[#00a1a7] hover:to-[#005072]
-                                           hover:scale-105 inline-block">
-                                                                            Dashboard </span>
+                    Your{" "}
+                    <span
+                        className="bg-gradient-to-r from-[#005072] to-[#00a1a7] bg-clip-text text-transparent
+                       transition-all duration-500 hover:from-[#00a1a7] hover:to-[#005072]
+                       hover:scale-105 inline-block"
+                    >
+            Dashboard
+          </span>
                 </h1>
 
                 {/* ---------- Stats Cards ---------- */}
@@ -97,7 +114,7 @@ export default function Dashboard() {
                             <p className="text-sm text-slate-500 font-medium">Recent Jobs</p>
                             <p className="text-2xl font-semibold text-slate-900">
                                 {
-                                    jobs.filter(j => {
+                                    jobs.filter((j) => {
                                         const created = new Date(j.createdAt);
                                         const diffDays = (Date.now() - created) / (1000 * 60 * 60 * 24);
                                         return diffDays <= 7;
@@ -117,7 +134,7 @@ export default function Dashboard() {
                             <p className="text-sm text-slate-500 font-medium">Recent Applications</p>
                             <p className="text-2xl font-semibold text-slate-900">
                                 {
-                                    receivedApps.filter(a => {
+                                    receivedApps.filter((a) => {
                                         const created = new Date(a.createdAt);
                                         const diffDays = (Date.now() - created) / (1000 * 60 * 60 * 24);
                                         return diffDays <= 7;
@@ -129,12 +146,12 @@ export default function Dashboard() {
                     </div>
                 </div>
 
-
+                {/* ---------- Data Sections ---------- */}
                 <div className="grid lg:grid-cols-3 gap-8">
                     {/* ---------- My Jobs ---------- */}
                     <section className="bg-white border border-slate-200 rounded-2xl shadow-sm p-6">
                         <div className="flex items-center gap-2 mb-4">
-                            <Briefcase className="w-5 h-5 text-[#005072]"/>
+                            <Briefcase className="w-5 h-5 text-[#005072]" />
                             <h2 className="text-xl font-semibold text-slate-900">My Jobs</h2>
                         </div>
 

@@ -1,21 +1,36 @@
 import React, { useEffect, useState } from "react";
 import api from "../services/api.js";
-import { Briefcase, MapPin, DollarSign, CalendarDays } from "lucide-react";
+import {
+    Briefcase,
+    MapPin,
+    DollarSign,
+    CalendarDays,
+    Loader2,
+} from "lucide-react";
 
 export default function JobList() {
     const [jobs, setJobs] = useState([]);
     const [q, setQ] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
+    const [loading, setLoading] = useState(true); // 👈 NEW
     const jobsPerPage = 6;
 
     useEffect(() => {
-        api
-            .get("/jobs")
-            .then((res) => setJobs(res.data))
-            .catch(() => setJobs([]));
+        const fetchJobs = async () => {
+            try {
+                const res = await api.get("/jobs");
+                setJobs(res.data);
+            } catch (err) {
+                console.error("❌ Job fetch error:", err);
+                setJobs([]);
+            } finally {
+                setLoading(false); // 👈 spinner disappears even on error
+            }
+        };
+        fetchJobs();
     }, []);
 
-    // 🔍 Filter jobs based on search query
+    // 🔍 Filter jobs
     const filtered = jobs.filter((j) =>
         [j.title, j.company, j.location]
             .join(" ")
@@ -29,10 +44,9 @@ export default function JobList() {
     const indexOfFirstJob = indexOfLastJob - jobsPerPage;
     const currentJobs = filtered.slice(indexOfFirstJob, indexOfLastJob);
     const totalPages = Math.ceil(totalJobs / jobsPerPage);
-
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-    // ⏱️ Helper to calculate "days ago"
+    // ⏱️ Helper for "days ago"
     const daysAgo = (dateString) => {
         if (!dateString) return "N/A";
         const posted = new Date(dateString);
@@ -41,6 +55,17 @@ export default function JobList() {
         return diff === 0 ? "Today" : `${diff} day${diff > 1 ? "s" : ""} ago`;
     };
 
+    // ---------- LOADING SPINNER ----------
+    if (loading) {
+        return (
+            <div className="flex flex-col items-center justify-center min-h-screen bg-[#f9fafb] text-slate-600">
+                <Loader2 className="animate-spin w-10 h-10 text-[#00a1a7] mb-4" />
+                <p className="text-sm">Loading job listings…</p>
+            </div>
+        );
+    }
+
+    // ---------- MAIN CONTENT ----------
     return (
         <div className="min-h-screen bg-[#f9fafb] text-slate-800">
             <div className="max-w-6xl mx-auto px-6 py-16">
@@ -51,11 +76,11 @@ export default function JobList() {
                             Find Your Next{" "}
                             <span
                                 className="bg-gradient-to-r from-[#005072] to-[#00a1a7] bg-clip-text text-transparent
-                                           transition-all duration-500 hover:from-[#00a1a7] hover:to-[#005072]
-                                           hover:scale-105 inline-block"
-                                                                        >
-                                                                            Role
-                            </span>
+                           transition-all duration-500 hover:from-[#00a1a7] hover:to-[#005072]
+                           hover:scale-105 inline-block"
+                            >
+                Role
+              </span>
                         </h1>
                         <p className="text-slate-500">
                             Explore opportunities posted by employers.
@@ -64,7 +89,8 @@ export default function JobList() {
                     <p className="text-sm text-slate-500 mt-4 lg:mt-0">
                         Showing{" "}
                         <span className="font-semibold text-slate-700">
-              {indexOfFirstJob + 1}–{Math.min(indexOfLastJob, totalJobs)}
+              {indexOfFirstJob + 1}–
+                            {Math.min(indexOfLastJob, totalJobs) || 0}
             </span>{" "}
                         of <span className="font-semibold">{totalJobs}</span> jobs
                     </p>
@@ -98,7 +124,6 @@ export default function JobList() {
                             </div>
 
                             <p className="text-slate-500 mt-1">{job.company}</p>
-
                             <p className="text-slate-600 mt-3 line-clamp-3">
                                 {job.description}
                             </p>
