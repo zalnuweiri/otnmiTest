@@ -85,13 +85,17 @@ export default function JobList() {
                             Explore opportunities posted by employers.
                         </p>
                     </div>
-                    <p className="text-sm text-slate-500 mt-4 lg:mt-0">
-                        Showing{" "}
+
+                    <div
+                        className="flex justify-center md:justify-end items-center gap-1 text-slate-500 text-sm mt-4 md:mt-0">
+                        <span>Showing</span>
                         <span className="font-semibold text-slate-700">
-            {indexOfFirstJob + 1}–{Math.min(indexOfLastJob, totalJobs) || 0}
-          </span>{" "}
-                        of <span className="font-semibold">{totalJobs}</span> jobs
-                    </p>
+      {indexOfFirstJob + 1}–{Math.min(indexOfLastJob, totalJobs) || 0}
+    </span>
+                        <span>of</span>
+                        <span className="font-semibold text-slate-700">{totalJobs}</span>
+                        <span>jobs</span>
+                    </div>
                 </div>
 
                 {/* ---------- Search Bar ---------- */}
