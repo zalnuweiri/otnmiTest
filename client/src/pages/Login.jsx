@@ -5,14 +5,14 @@ import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 
 export default function Login() {
-    const { loginUser } = useAuth();
+    const {loginUser} = useAuth();
     const navigate = useNavigate();
-    const [form, setForm] = useState({ email: "", password: "" });
+    const [form, setForm] = useState({email: "", password: ""});
     const [error, setError] = useState("");
     const [showPassword, setShowPassword] = useState(false);
 
     const handleChange = (e) => {
-        setForm({ ...form, [e.target.name]: e.target.value });
+        setForm({...form, [e.target.name]: e.target.value});
     };
 
     const handleSubmit = async (e) => {
@@ -29,51 +29,60 @@ export default function Login() {
     };
 
     return (
-        <div className="max-w-md mx-auto mt-20 bg-card p-8 rounded-2xl border shadow-md">
-            <h2 className="text-2xl font-bold text-secondary mb-6 text-center">Login</h2>
+        <div className="min-h-screen flex items-center justify-center bg-[#f9fafb] px-4">
+            <div className="w-full max-w-md bg-white border border-slate-200 rounded-2xl shadow-lg p-8">
+                <h2 className="text-3xl font-bold text-[#005072] text-center mb-6">Login</h2>
 
-            <form onSubmit={handleSubmit} className="flex flex-col gap-4 relative">
-                {/* Email field */}
-                <input
-                    name="email"
-                    type="email"
-                    placeholder="Email Address"
-                    value={form.email}
-                    onChange={handleChange}
-                    required
-                    className="border px-4 py-3 rounded-xl w-full"
-                />
-
-                {/* Password field with toggle */}
-                <div className="relative">
+                <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+                    {/* Email */}
                     <input
-                        name="password"
-                        type={showPassword ? "text" : "password"}
-                        placeholder="Password"
-                        value={form.password}
+                        name="email"
+                        type="email"
+                        placeholder="Email Address"
+                        value={form.email}
                         onChange={handleChange}
                         required
-                        className="border px-4 py-3 rounded-xl w-full pr-10"
+                        className="border border-slate-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-[#00a1a7] focus:border-transparent transition-all"
                     />
+
+                    {/* Password */}
+                    <div className="relative">
+                        <input
+                            name="password"
+                            type={showPassword ? "text" : "password"}
+                            placeholder="Password"
+                            value={form.password}
+                            onChange={handleChange}
+                            required
+                            className="border border-slate-300 rounded-xl px-4 py-3 w-full pr-10 focus:ring-2 focus:ring-[#00a1a7] focus:border-transparent transition-all"
+                        />
+                        <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute inset-y-0 right-3 flex items-center text-slate-500 hover:text-[#005072]"
+                        >
+                            {showPassword ? <EyeOff size={18}/> : <Eye size={18}/>}
+                        </button>
+                    </div>
+
+                    {/* Submit */}
                     <button
-                        type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700"
+                        type="submit"
+                        className="bg-gradient-to-r from-[#005072] to-[#00a1a7] text-white py-3 rounded-xl font-medium hover:opacity-90 transition-all"
                     >
-                        {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                        Login
                     </button>
-                </div>
+                </form>
 
-                {/* Submit button */}
-                <button
-                    type="submit"
-                    className="bg-secondary text-white px-4 py-3 rounded-xl hover:opacity-90 transition"
-                >
-                    Login
-                </button>
-            </form>
+                {error && <p className="text-red-600 mt-4 text-center">{error}</p>}
 
-            {error && <p className="text-red-600 mt-4 text-center">{error}</p>}
+                <p className="text-center text-sm text-slate-500 mt-6">
+                    Don’t have an account?{" "}
+                    <a href="/signup" className="text-[#00a1a7] font-medium hover:underline">
+                        Sign up here
+                    </a>
+                </p>
+            </div>
         </div>
     );
 }
