@@ -83,6 +83,22 @@
         width: 100% !important;
         font-size: 0.95rem !important;
     }
+    .job-detail-apply label {
+        width: 100% !important;
+        flex-wrap: wrap !important;
+    }
+}
+
+/* GLOBAL FIX — always active, not wrapped in @media */
+.job-detail-apply,
+.job-detail-cards,
+.job-detail-header,
+.job-detail-apply form,
+.job-detail-apply input,
+.job-detail-apply button {
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box;
 }
 
 /* -------------------------
@@ -279,4 +295,15 @@ header a.border {
     footer p {
         font-size: 0.9rem !important;
     }
+}
+
+/* Consistent spacing for scroll hint text */
+.scroll-hint {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.4rem;
+    color: #94a3b8; /* Tailwind text-slate-400 */
+    font-size: 0.875rem;
+    animation: pulse 2s infinite;
 }

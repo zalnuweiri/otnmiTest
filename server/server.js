@@ -14,7 +14,7 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5050;
 
-// ✅ CORS setup
+// CORS setup
 app.use(
     cors({
         origin: [
@@ -30,13 +30,13 @@ app.use(
 
 app.use(express.json());
 
-// ✅ Health check
+// Health check
 app.get("/health", (_req, res) =>
     res.json({ ok: true, service: "api", port: PORT })
 );
 app.get("/api/ping", (_req, res) => res.json({ pong: true }));
 
-// ✅ Static file serving (MUST be above routes)
+// Static file serving (MUST be above routes)
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -44,7 +44,7 @@ const __dirname = path.dirname(__filename);
 app.use("/uploads", express.static(path.join(__dirname, "src/uploads")));
 console.log("📂 Serving uploads from:", path.join(__dirname, "src/uploads"));
 
-// ✅ MongoDB connection
+// MongoDB connection
 mongoose
     .connect(process.env.MONGO_URI)
     .then(() => console.log("✅ MongoDB connected"))
@@ -53,10 +53,10 @@ mongoose
         process.exit(1);
     });
 
-// ✅ Routes
+// Routes
 app.use("/api/jobs", jobRoutes);
 app.use("/api/applications", applicationRoutes);
 app.use("/api/users", userRoutes);
 
-// ✅ Start server
+//  Start server
 app.listen(PORT, () => console.log(`🚀 API running on :${PORT}`));

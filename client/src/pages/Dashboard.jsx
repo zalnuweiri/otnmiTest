@@ -245,7 +245,7 @@ export default function Dashboard() {
                         </div>
                     </div>
                     {showStatsScrollHint && (
-                        <div className="md:hidden mt-4 mb-6 flex justify-center items-center gap-2 text-slate-400 text-sm animate-pulse">
+                        <div className="scroll-hint md:hidden mb-2">
                             <span>Swipe to view more</span>
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -255,7 +255,7 @@ export default function Dashboard() {
                                 stroke="currentColor"
                                 className="w-4 h-4"
                             >
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/>
                             </svg>
                         </div>
                     )}
