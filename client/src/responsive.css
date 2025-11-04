@@ -307,3 +307,11 @@ header a.border {
     font-size: 0.875rem;
     animation: pulse 2s infinite;
 }
+
+/* Keep rings fully visible inside rounded cards across browsers */
+.job-detail-apply .rounded-2xl { overflow: visible; }
+.job-detail-apply input,
+.job-detail-apply button,
+.job-detail-apply .group > label {
+    background-clip: padding-box; /* avoids weird edge halos on Firefox/Safari */
+}

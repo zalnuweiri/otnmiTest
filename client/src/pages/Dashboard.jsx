@@ -12,6 +12,19 @@ import {
     Loader2,
 } from "lucide-react";
 
+function ScrollHint() {
+    return (
+        <div className="md:hidden mt-3 mb-4 flex justify-center items-center gap-2 text-slate-400 text-sm animate-pulse">
+            <span>Swipe to view more</span>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" strokeWidth="1.5"
+                 className="w-4 h-4">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/>
+            </svg>
+        </div>
+    );
+}
+
 /* ============================================================
    UNIVERSAL PAGINATED SECTION COMPONENT
    ============================================================ */
@@ -92,8 +105,7 @@ export default function Dashboard() {
     const [receivedApps, setReceivedApps] = useState([]);
     const [sentApps, setSentApps] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [showScrollHint, setShowScrollHint] = useState(false);
-    const [showStatsScrollHint, setShowStatsScrollHint] = useState(false);
+    const [showAnyScrollHint, setShowAnyScrollHint] = useState(false);
 
 
     // Fetch dashboard data
@@ -122,15 +134,12 @@ export default function Dashboard() {
             }
             // Detect scrollable dashboard sections on mobile
             setTimeout(() => {
-                const statsContainer = document.querySelector(".dashboard-stats");
-                const dataContainer = document.querySelector(".dashboard-sections");
-
-                if (statsContainer && statsContainer.scrollWidth > statsContainer.clientWidth) {
-                    setShowStatsScrollHint(true);
-                }
-                if (dataContainer && dataContainer.scrollWidth > dataContainer.clientWidth) {
-                    setShowScrollHint(true);
-                }
+                const stats = document.querySelector(".dashboard-stats");
+                const cols  = document.querySelector(".dashboard-sections");
+                const canSwipe =
+                    (stats && stats.scrollWidth > stats.clientWidth) ||
+                    (cols  && cols.scrollWidth  > cols.clientWidth);
+                setShowAnyScrollHint(!!canSwipe);
             }, 300);
 
         };
@@ -244,22 +253,9 @@ export default function Dashboard() {
                             <p className="text-xs text-slate-400">Last 7 days</p>
                         </div>
                     </div>
-                    {showStatsScrollHint && (
-                        <div className="scroll-hint md:hidden mb-2">
-                            <span>Swipe to view more</span>
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth={1.5}
-                                stroke="currentColor"
-                                className="w-4 h-4"
-                            >
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/>
-                            </svg>
-                        </div>
-                    )}
                 </div>
+
+                {showAnyScrollHint && <ScrollHint />}
 
                 {/* ---------- Data Sections (All Paginated) ---------- */}
                 <div className=" flex flex-nowrap gap-6 overflow-x-auto md:overflow-x-visible snap-x snap-mandatory scroll-smooth
@@ -350,22 +346,6 @@ export default function Dashboard() {
                         )}
                     />
                 </div>
-                {showScrollHint && (
-                    <div className="md:hidden mt-4 flex justify-center items-center gap-2 text-slate-400 text-sm animate-pulse">
-                        <span>Swipe to view more</span>
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="w-4 h-4"
-                        >
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                        </svg>
-                    </div>
-                )}
-
             </div>
         </div>
     );

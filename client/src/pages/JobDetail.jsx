@@ -140,17 +140,23 @@ export default function JobDetail() {
                             name="name"
                             placeholder="Your Name"
                             required
-                            className="border border-slate-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-[#00a1a7] focus:border-transparent transition-all"
+                            className="border border-slate-300 rounded-xl px-4 py-3
+             focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[#00a1a7]
+             focus:border-[#00a1a7] transition-all"
                         />
+
                         <input
                             name="email"
                             type="email"
                             placeholder="Email"
                             required
-                            className="border border-slate-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-[#00a1a7] focus:border-transparent transition-all"
+                            className="border border-slate-300 rounded-xl px-4 py-3
+             focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[#00a1a7]
+             focus:border-[#00a1a7] transition-all"
                         />
+
                         <div className="md:col-span-2 relative group">
-                            <label
+                        <label
                                 htmlFor="cv"
                                 className="flex items-center justify-between w-full border border-slate-300 rounded-xl px-4 py-3 bg-white cursor-pointer text-slate-500 hover:text-[#005072] hover:border-[#00a1a7] transition-all"
                             >
