@@ -96,6 +96,24 @@ function PaginatedSection({ title, icon: Icon, items, renderItem }) {
     );
 }
 
+function ErrorModal({ message, onClose }) {
+    if (!message) return null;
+    return (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
+            <div className="bg-white rounded-2xl shadow-lg max-w-sm w-full p-6 text-center">
+                <h2 className="text-lg font-semibold text-slate-900 mb-3">Download Failed</h2>
+                <p className="text-slate-600 mb-5">{message}</p>
+                <button
+                    onClick={onClose}
+                    className="px-4 py-2 bg-[#00a1a7] hover:bg-[#008e94] text-white rounded-lg font-medium"
+                >
+                    OK
+                </button>
+            </div>
+        </div>
+    );
+}
+
 /* ============================================================
    MAIN DASHBOARD COMPONENT
    ============================================================ */
@@ -106,6 +124,21 @@ export default function Dashboard() {
     const [sentApps, setSentApps] = useState([]);
     const [loading, setLoading] = useState(true);
     const [showAnyScrollHint, setShowAnyScrollHint] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
+
+
+    const handleDownload = async (url) => {
+        try {
+            const res = await fetch(url, { method: "HEAD" });
+            if (!res.ok) throw new Error("File not found");
+            window.open(url, "_blank");
+        } catch {
+            setErrorMessage(
+                "Failed to download due to Render’s file storage resets. Upload a new application and test again."
+            );
+        }
+    };
+
 
 
     // Fetch dashboard data
@@ -299,13 +332,13 @@ export default function Dashboard() {
                                         <p className="font-medium text-[#005072]">{a.name}</p>
                                         <p className="text-sm text-slate-500">{a.email}</p>
                                     </div>
-                                    <a
-                                        href={a.cvPath}
-                                        download
+                                    <button
+                                        onClick={() => handleDownload(a.cvPath)}
                                         className="flex items-center gap-1 text-[#00a1a7] hover:underline text-sm"
                                     >
-                                        <Download className="w-4 h-4" /> CV
-                                    </a>
+                                        <Download className="w-4 h-4"/> CV
+                                    </button>
+
                                 </div>
                                 <p className="text-sm text-slate-600 mt-2">
                                     Applied for{" "}
@@ -330,13 +363,13 @@ export default function Dashboard() {
                                         </p>
                                         <p className="text-sm text-slate-500">{a.job?.company}</p>
                                     </div>
-                                    <a
-                                        href={a.cvPath}
-                                        download
+                                    <button
+                                        onClick={() => handleDownload(a.cvPath)}
                                         className="flex items-center gap-1 text-[#00a1a7] hover:underline text-sm"
                                     >
-                                        <Download className="w-4 h-4" /> CV
-                                    </a>
+                                        <Download className="w-4 h-4"/> CV
+                                    </button>
+
                                 </div>
                                 <p className="text-sm text-slate-600 mt-2">
                                     Status: <b className="text-slate-800">Submitted</b> — by{" "}
@@ -347,6 +380,7 @@ export default function Dashboard() {
                     />
                 </div>
             </div>
+            <ErrorModal message={errorMessage} onClose={() => setErrorMessage("")} />
         </div>
     );
 }
