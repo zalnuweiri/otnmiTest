@@ -308,6 +308,17 @@ header a.border {
     animation: pulse 2s infinite;
 }
 
+/* Fade out animation for the scroll hint */
+.fade-out {
+    animation: fadeOut 0.7s ease forwards;
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(-4px); pointer-events: none; }
+}
+
+
 /* Keep rings fully visible inside rounded cards across browsers */
 .job-detail-apply .rounded-2xl { overflow: visible; }
 .job-detail-apply input,
